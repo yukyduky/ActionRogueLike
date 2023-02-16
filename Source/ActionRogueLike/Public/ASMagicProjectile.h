@@ -25,7 +25,7 @@ protected:
 	USphereComponent* SphereComp;
 
 	UPROPERTY(VisibleAnywhere)
-		UParticleSystemComponent* EffectComp;
+	UParticleSystemComponent* EffectComp;
 
 	UPROPERTY(VisibleAnywhere)
 	UProjectileMovementComponent* MovementComp;
