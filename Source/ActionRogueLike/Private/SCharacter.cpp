@@ -60,7 +60,7 @@ void ASCharacter::MoveJump()
 	Jump();
 }
 
-void ASCharacter::PrimaryAttack()
+void ASCharacter::PrimaryAttack_TimeElasped()
 {
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
@@ -70,6 +70,13 @@ void ASCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
+void ASCharacter::PrimaryAttack()
+{
+	PlayAnimMontage(AttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElasped, 0.2f);
 }
 
 void ASCharacter::PrimaryInteract()
