@@ -7,6 +7,7 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include <SInteractionComponent.h>
+#include <SProjectile.h>
 
 // Sets default values
 ASCharacter::ASCharacter()
