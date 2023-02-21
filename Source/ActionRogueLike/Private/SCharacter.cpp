@@ -70,6 +70,9 @@ void ASCharacter::PrimaryAttack_TimeElasped()
 	FVector End = CenterOfCamera + (GetControlRotation().Vector() * 10000);
 
 	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+
 	FHitResult Hit;
 
 	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, CenterOfCamera, End, ObjectQueryParams);
