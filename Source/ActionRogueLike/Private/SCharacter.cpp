@@ -67,20 +67,31 @@ void ASCharacter::PrimaryAttack_TimeElasped()
 
 	FVector CenterOfCamera = CameraComp->GetComponentLocation();
 
-	FVector End = CenterOfCamera + (GetControlRotation().Vector() * 10000000000);
+	FVector End = CenterOfCamera + (GetControlRotation().Vector() * 10000);
 
 	FCollisionObjectQueryParams ObjectQueryParams;
 	FHitResult Hit;
 
-	GetWorld()->LineTraceSingleByObjectType(Hit, CenterOfCamera, End, ObjectQueryParams);
+	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, CenterOfCamera, End, ObjectQueryParams);
 
-	FRotator AimRotator = FVector(Hit.ImpactPoint - HandLocation).ToOrientationRotator();
+	FRotator AimRotator;
+
+	if (bBlockingHit)
+	{
+		AimRotator = FVector(Hit.ImpactPoint - HandLocation).ToOrientationRotator();
+		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 30.0f, 32, FColor::Green, false, 2.0f);
+		DrawDebugLine(GetWorld(), HandLocation, Hit.ImpactPoint, FColor::Orange, false, 2.0f, 0, 2.0f);
+	}
+	else
+	{
+		AimRotator = FVector(End - HandLocation).ToOrientationRotator();
+		DrawDebugSphere(GetWorld(), End, 30.0f, 32, FColor::Green, false, 2.0f);
+		DrawDebugLine(GetWorld(), HandLocation, End, FColor::Orange, false, 2.0f, 0, 2.0f);
+	}
 
 	FTransform SpawnTM = FTransform(AimRotator, HandLocation);
 
-	//DrawDebugLine(GetWorld(), CenterOfCamera, End, FColor::Blue, false, 2.0f, 0, 2.0f);
-	//DrawDebugLine(GetWorld(), HandLocation, Hit.ImpactPoint, FColor::Orange, false, 2.0f, 0, 2.0f);
-	//DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 30.0f, 32, FColor::Green, false, 2.0f);
+	DrawDebugLine(GetWorld(), CenterOfCamera, End, FColor::Blue, false, 2.0f, 0, 2.0f);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
