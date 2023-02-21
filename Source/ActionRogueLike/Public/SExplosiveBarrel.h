@@ -4,27 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ExplosiveBarrel.generated.h"
+#include "SExplosiveBarrel.generated.h"
 
-class UCapsuleComponent;
+class UStaticMeshComponent;
 class UParticleSystemComponent;
 class URadialForceComponent;
 
 UCLASS()
-class ACTIONROGUELIKE_API AExplosiveBarrel : public AActor
+class ACTIONROGUELIKE_API ASExplosiveBarrel : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AExplosiveBarrel();
+	ASExplosiveBarrel();
 
 protected:
+	virtual void PostInitializeComponents() override;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-	UCapsuleComponent* CapsuleComp;
+	UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;
@@ -33,10 +35,13 @@ protected:
 	URadialForceComponent* ForceComp;
 
 	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);
+	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void Explode();
 
 };
