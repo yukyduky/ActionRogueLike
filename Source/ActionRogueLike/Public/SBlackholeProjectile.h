@@ -3,19 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
 #include <SProjectile.h>
-#include "ASMagicProjectile.generated.h"
+#include "SBlackholeProjectile.generated.h"
 
 UCLASS()
-class ACTIONROGUELIKE_API AASMagicProjectile : public ASProjectile
+class ACTIONROGUELIKE_API ASBlackholeProjectile : public ASProjectile
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AASMagicProjectile();
+	ASBlackholeProjectile();
 
 protected:
+	virtual void PostInitializeComponents() override;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
