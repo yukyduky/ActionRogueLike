@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
 
+	UPROPERTY(EditAnywhere, Category = "Ultimate")
+	TSubclassOf<ASProjectile> UltimateProjectileClass;
+
 	FTimerHandle TimerHandle_PrimaryAttack;
 
 
@@ -56,6 +59,8 @@ protected:
 	void PrimaryAttack();
 	void Teleport_TimeElasped();
 	void Teleport();
+	void Blackhole_TimeElasped();
+	void Blackhole();
 	void PrimaryInteract();
 
 public:	

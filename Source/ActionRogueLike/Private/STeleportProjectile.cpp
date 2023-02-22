@@ -6,6 +6,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -36,7 +37,7 @@ void ASTeleportProjectile::Teleport()
 
 void ASTeleportProjectile::KillProjectile()
 {
-	DeathEffectComp->Activate();
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorLocation());
 	MovementComp->StopMovementImmediately();
 	EffectComp->Deactivate();
 	bFlying = false;
