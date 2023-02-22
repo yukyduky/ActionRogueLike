@@ -19,10 +19,22 @@ ASProjectile::ASProjectile()
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
 	EffectComp->SetupAttachment(SphereComp);
 
+	DeathEffectComp = CreateDefaultSubobject<UParticleSystemComponent>("DeathEffectComp");
+	DeathEffectComp->SetupAttachment(SphereComp);
+	DeathEffectComp->SecondsBeforeInactive = 0.0f;
+	DeathEffectComp->bAutoActivate = false;
+
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
 	MovementComp->InitialSpeed = 1000.0f;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
+}
+
+void ASProjectile::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	SphereComp->OnComponentHit.AddDynamic(this, &ASProjectile::OnActorHit);
 }
 
 // Called when the game starts or when spawned
@@ -30,6 +42,17 @@ void ASProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ASProjectile::KillProjectile()
+{
+	DeathEffectComp->Activate();
+	this->Destroy();
+}
+
+void ASProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	KillProjectile();
 }
 
 // Called every frame

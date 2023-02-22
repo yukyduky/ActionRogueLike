@@ -18,8 +18,11 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 
 protected:
 
+	UPROPERTY(EditAnywhere, Category = "Utility")
+	TSubclassOf<ASProjectile> UtilityProjectileClass;
+
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<ASProjectile> ProjectileClass;
+	TSubclassOf<ASProjectile> ProjectileClass;	
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
@@ -51,6 +54,8 @@ protected:
 
 	void PrimaryAttack_TimeElasped();
 	void PrimaryAttack();
+	void Teleport_TimeElasped();
+	void Teleport();
 	void PrimaryInteract();
 
 public:	

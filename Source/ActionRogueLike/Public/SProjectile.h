@@ -19,7 +19,11 @@ public:
 	// Sets default values for this actor's properties
 	ASProjectile();
 
+
+
 protected:
+	virtual void PostInitializeComponents() override;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -30,7 +34,15 @@ protected:
 	UParticleSystemComponent* EffectComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UParticleSystemComponent* DeathEffectComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UProjectileMovementComponent* MovementComp;
+
+	virtual void KillProjectile();
+
+	UFUNCTION()
+	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 public:	
 	// Called every frame
