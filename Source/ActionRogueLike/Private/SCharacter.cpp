@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include <SInteractionComponent.h>
 #include <SProjectile.h>
+#include <SAttributeComponent.h>
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -24,9 +25,15 @@ ASCharacter::ASCharacter()
 
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>("InteractionComp");
 
+	AttributeComp = CreateDefaultSubobject<USAttributeComponent>("AttributeComp");
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	bUseControllerRotationYaw = false;
+
+	ProjectileClass = nullptr;
+	UtilityProjectileClass = nullptr;
+	UltimateProjectileClass = nullptr;
 }
 
 // Called when the game starts or when spawned
