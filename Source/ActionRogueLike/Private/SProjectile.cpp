@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASProjectile::ASProjectile()
@@ -15,19 +16,16 @@ ASProjectile::ASProjectile()
 	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
 	SphereComp->SetCollisionProfileName("Projectile");
 	RootComponent = SphereComp;
+	SphereComp->SetEnableGravity(false);
 
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
 	EffectComp->SetupAttachment(SphereComp);
-
-	DeathEffectComp = CreateDefaultSubobject<UParticleSystemComponent>("DeathEffectComp");
-	DeathEffectComp->SetupAttachment(SphereComp);
-	DeathEffectComp->SecondsBeforeInactive = 0.0f;
-	DeathEffectComp->bAutoActivate = false;
 
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
 	MovementComp->InitialSpeed = 1000.0f;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
+	MovementComp->ProjectileGravityScale = 0.0f;
 }
 
 void ASProjectile::PostInitializeComponents()
@@ -41,12 +39,13 @@ void ASProjectile::PostInitializeComponents()
 void ASProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
 
 void ASProjectile::KillProjectile()
 {
-	DeathEffectComp->Activate();
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorLocation());
 	this->Destroy();
 }
 
