@@ -29,7 +29,8 @@ void ASTeleportProjectile::BeginPlay()
 
 void ASTeleportProjectile::Teleport()
 {
-	GetInstigator()->SetActorLocation(this->GetActorLocation());
+	APawn* instigator = GetInstigator();
+	instigator->TeleportTo(this->GetActorLocation(), instigator->GetActorRotation());
 	this->Destroy();
 }
 
