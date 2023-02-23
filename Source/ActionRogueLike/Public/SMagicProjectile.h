@@ -16,6 +16,9 @@ public:
 	ASMagicProjectile();
 
 protected:
+	UPROPERTY(EditAnywhere, Category = "Damage")
+	float DamageAmount;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

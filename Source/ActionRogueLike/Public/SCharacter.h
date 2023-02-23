@@ -40,6 +40,8 @@ public:
 
 protected:
 
+	virtual void PostInitializeComponents();
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
@@ -68,6 +70,10 @@ protected:
 	void PrimaryInteract();
 
 	void SpawnProjectile(TSubclassOf<ASProjectile> ClassToSpawn);
+
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+
 
 public:	
 	// Called every frame
