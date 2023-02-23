@@ -31,7 +31,7 @@ ASCharacter::ASCharacter()
 
 	bUseControllerRotationYaw = false;
 
-	ProjectileClass = nullptr;
+	PrimaryProjectileClass = nullptr;
 	UtilityProjectileClass = nullptr;
 	UltimateProjectileClass = nullptr;
 }
@@ -70,44 +70,7 @@ void ASCharacter::MoveJump()
 
 void ASCharacter::PrimaryAttack_TimeElasped()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FVector CenterOfCamera = CameraComp->GetComponentLocation();
-
-	FVector End = CenterOfCamera + (GetControlRotation().Vector() * 10000);
-
-	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
-
-	FHitResult Hit;
-
-	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, CenterOfCamera, End, ObjectQueryParams);
-
-	FRotator AimRotator;
-
-	if (bBlockingHit)
-	{
-		AimRotator = FVector(Hit.ImpactPoint - HandLocation).ToOrientationRotator();
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 30.0f, 32, FColor::Green, false, 2.0f);
-		DrawDebugLine(GetWorld(), HandLocation, Hit.ImpactPoint, FColor::Orange, false, 2.0f, 0, 2.0f);
-	}
-	else
-	{
-		AimRotator = FVector(End - HandLocation).ToOrientationRotator();
-		DrawDebugSphere(GetWorld(), End, 30.0f, 32, FColor::Green, false, 2.0f);
-		DrawDebugLine(GetWorld(), HandLocation, End, FColor::Orange, false, 2.0f, 0, 2.0f);
-	}
-
-	FTransform SpawnTM = FTransform(AimRotator, HandLocation);
-
-	DrawDebugLine(GetWorld(), CenterOfCamera, End, FColor::Blue, false, 2.0f, 0, 2.0f);
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	SpawnProjectile(PrimaryProjectileClass);
 }
 
 void ASCharacter::PrimaryAttack()
@@ -119,44 +82,7 @@ void ASCharacter::PrimaryAttack()
 
 void ASCharacter::Teleport_TimeElasped()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FVector CenterOfCamera = CameraComp->GetComponentLocation();
-
-	FVector End = CenterOfCamera + (GetControlRotation().Vector() * 10000);
-
-	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
-
-	FHitResult Hit;
-
-	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, CenterOfCamera, End, ObjectQueryParams);
-
-	FRotator AimRotator;
-
-	if (bBlockingHit)
-	{
-		AimRotator = FVector(Hit.ImpactPoint - HandLocation).ToOrientationRotator();
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 30.0f, 32, FColor::Green, false, 2.0f);
-		DrawDebugLine(GetWorld(), HandLocation, Hit.ImpactPoint, FColor::Orange, false, 2.0f, 0, 2.0f);
-	}
-	else
-	{
-		AimRotator = FVector(End - HandLocation).ToOrientationRotator();
-		DrawDebugSphere(GetWorld(), End, 30.0f, 32, FColor::Green, false, 2.0f);
-		DrawDebugLine(GetWorld(), HandLocation, End, FColor::Orange, false, 2.0f, 0, 2.0f);
-	}
-
-	FTransform SpawnTM = FTransform(AimRotator, HandLocation);
-
-	DrawDebugLine(GetWorld(), CenterOfCamera, End, FColor::Blue, false, 2.0f, 0, 2.0f);
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	GetWorld()->SpawnActor<AActor>(UtilityProjectileClass, SpawnTM, SpawnParams);
+	SpawnProjectile(UtilityProjectileClass);
 }
 
 void ASCharacter::Teleport()
@@ -168,44 +94,7 @@ void ASCharacter::Teleport()
 
 void ASCharacter::Blackhole_TimeElasped()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FVector CenterOfCamera = CameraComp->GetComponentLocation();
-
-	FVector End = CenterOfCamera + (GetControlRotation().Vector() * 10000);
-
-	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
-
-	FHitResult Hit;
-
-	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, CenterOfCamera, End, ObjectQueryParams);
-
-	FRotator AimRotator;
-
-	if (bBlockingHit)
-	{
-		AimRotator = FVector(Hit.ImpactPoint - HandLocation).ToOrientationRotator();
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 30.0f, 32, FColor::Green, false, 2.0f);
-		DrawDebugLine(GetWorld(), HandLocation, Hit.ImpactPoint, FColor::Orange, false, 2.0f, 0, 2.0f);
-	}
-	else
-	{
-		AimRotator = FVector(End - HandLocation).ToOrientationRotator();
-		DrawDebugSphere(GetWorld(), End, 30.0f, 32, FColor::Green, false, 2.0f);
-		DrawDebugLine(GetWorld(), HandLocation, End, FColor::Orange, false, 2.0f, 0, 2.0f);
-	}
-
-	FTransform SpawnTM = FTransform(AimRotator, HandLocation);
-
-	DrawDebugLine(GetWorld(), CenterOfCamera, End, FColor::Blue, false, 2.0f, 0, 2.0f);
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	GetWorld()->SpawnActor<AActor>(UltimateProjectileClass, SpawnTM, SpawnParams);
+	SpawnProjectile(UltimateProjectileClass);
 }
 
 void ASCharacter::Blackhole()
@@ -220,6 +109,51 @@ void ASCharacter::PrimaryInteract()
 	if (InteractionComp)
 	{
 		InteractionComp->PrimaryInteract();
+	}
+}
+
+void ASCharacter::SpawnProjectile(TSubclassOf<ASProjectile> ClassToSpawn)
+{
+	if (ensure(ClassToSpawn))
+	{
+		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+		FVector CenterOfCamera = CameraComp->GetComponentLocation();
+
+		FVector End = CenterOfCamera + (GetControlRotation().Vector() * 5000);
+
+		FCollisionObjectQueryParams ObjectQueryParams;
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+		FHitResult Hit;
+
+		FCollisionShape Shape;
+		Shape.SetSphere(20.0f);
+
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+
+		bool bBlockingHit = GetWorld()->SweepSingleByObjectType(Hit, CenterOfCamera, End, FQuat::Identity, ObjectQueryParams, Shape, Params);
+		if (bBlockingHit)
+		{
+			End = Hit.ImpactPoint;
+		}
+
+		FRotator AimRotator = FRotationMatrix::MakeFromX(End - HandLocation).Rotator();
+		DrawDebugSphere(GetWorld(), End, 30.0f, 32, FColor::Green, false, 2.0f);
+		DrawDebugLine(GetWorld(), HandLocation, End, FColor::Orange, false, 2.0f, 0, 2.0f);
+
+		FTransform SpawnTM = FTransform(AimRotator, HandLocation);
+
+		DrawDebugLine(GetWorld(), CenterOfCamera, End, FColor::Blue, false, 2.0f, 0, 2.0f);
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
+
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
 	}
 }
 

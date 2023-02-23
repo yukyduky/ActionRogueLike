@@ -45,8 +45,11 @@ void ASProjectile::BeginPlay()
 
 void ASProjectile::KillProjectile()
 {
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorLocation());
-	this->Destroy();
+	if (ensure(!IsPendingKill()))
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorLocation());
+		this->Destroy();
+	}
 }
 
 void ASProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

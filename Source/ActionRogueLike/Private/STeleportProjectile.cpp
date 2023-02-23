@@ -17,7 +17,6 @@ ASTeleportProjectile::ASTeleportProjectile()
 	
 	FlyTime = 0.2f;
 	TeleportDelay = 0.2f;
-	bFlying = true;
 }
 
 // Called when the game starts or when spawned
@@ -25,43 +24,29 @@ void ASTeleportProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
+	GetWorldTimerManager().SetTimer(TimerHandle_FlyTime, this, &ASTeleportProjectile::KillProjectile, FlyTime);
 }
 
-void ASTeleportProjectile::Teleport()
+void ASTeleportProjectile::TeleportInstigator()
 {
-	APawn* instigator = GetInstigator();
-	instigator->TeleportTo(this->GetActorLocation(), instigator->GetActorRotation());
-	this->Destroy();
+	APawn* ActorToTeleport = GetInstigator();
+	if (ensure(ActorToTeleport))
+	{
+		ActorToTeleport->TeleportTo(this->GetActorLocation(), ActorToTeleport->GetActorRotation(), false, false);
+		this->Destroy();
+	}
 }
 
 void ASTeleportProjectile::KillProjectile()
 {
+	GetWorldTimerManager().ClearTimer(TimerHandle_FlyTime);
+
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorLocation());
 	MovementComp->StopMovementImmediately();
-	EffectComp->Deactivate();
-	bFlying = false;
-}
+	SetActorEnableCollision(false);
+	EffectComp->DeactivateSystem();
 
-// Called every frame
-void ASTeleportProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	FlyTime -= DeltaTime;
-
-	if (FlyTime <= 0.0f && bFlying)
-	{
-		KillProjectile();
-	}
-	else if (!bFlying)
-	{
-		TeleportDelay -= DeltaTime;
-
-		if (TeleportDelay <= 0.0f)
-		{
-			Teleport();
-		}
-	}
+	FTimerHandle TimerHandle_TeleportDelay;
+	GetWorldTimerManager().SetTimer(TimerHandle_TeleportDelay, this, &ASTeleportProjectile::TeleportInstigator, TeleportDelay);
 }
 

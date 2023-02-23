@@ -23,7 +23,7 @@ protected:
 	TSubclassOf<ASProjectile> UtilityProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<ASProjectile> ProjectileClass;	
+	TSubclassOf<ASProjectile> PrimaryProjectileClass;	
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
@@ -66,6 +66,8 @@ protected:
 	void Blackhole_TimeElasped();
 	void Blackhole();
 	void PrimaryInteract();
+
+	void SpawnProjectile(TSubclassOf<ASProjectile> ClassToSpawn);
 
 public:	
 	// Called every frame

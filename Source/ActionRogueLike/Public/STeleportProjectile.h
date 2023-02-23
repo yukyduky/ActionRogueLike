@@ -23,13 +23,10 @@ protected:
 	float FlyTime;
 	UPROPERTY(EditAnywhere)
 	float TeleportDelay;
-	bool bFlying;
 
-	void Teleport();
+	FTimerHandle TimerHandle_FlyTime;
+
+	void TeleportInstigator();
 	virtual void KillProjectile() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 };
