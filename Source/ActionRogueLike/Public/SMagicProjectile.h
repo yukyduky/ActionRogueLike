@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include <SProjectile.h>
-#include "ASMagicProjectile.generated.h"
+#include "SMagicProjectile.generated.h"
 
 UCLASS()
-class ACTIONROGUELIKE_API AASMagicProjectile : public ASProjectile
+class ACTIONROGUELIKE_API ASMagicProjectile : public ASProjectile
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AASMagicProjectile();
+	ASMagicProjectile();
 
 protected:
 	// Called when the game starts or when spawned
