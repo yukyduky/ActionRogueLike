@@ -6,6 +6,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 ASProjectile::ASProjectile()
@@ -26,6 +27,9 @@ ASProjectile::ASProjectile()
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
 	MovementComp->ProjectileGravityScale = 0.0f;
+
+	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+	AudioComp->AttachTo(SphereComp);
 }
 
 void ASProjectile::PostInitializeComponents()
@@ -41,6 +45,8 @@ void ASProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), CastEffect, GetActorLocation());
 }
 
 void ASProjectile::KillProjectile()
@@ -48,6 +54,8 @@ void ASProjectile::KillProjectile()
 	if (ensure(!IsPendingKill()))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, GetActorLocation());
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), ShakeEffect, GetActorLocation(), 0.0f, 10000.0f);
 		this->Destroy();
 	}
 }

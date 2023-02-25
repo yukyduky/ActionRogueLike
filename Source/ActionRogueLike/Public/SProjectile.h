@@ -9,6 +9,7 @@
 class USphereComponent;
 class UParticleSystemComponent;
 class UProjectileMovementComponent;
+class UAudioComponent;
 
 UCLASS(ABSTRACT)
 class ACTIONROGUELIKE_API ASProjectile : public AActor
@@ -30,6 +31,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* DeathEffect;
 
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	UParticleSystem* CastEffect;
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	TSubclassOf<UCameraShakeBase> ShakeEffect;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* SphereComp;
 
@@ -38,6 +45,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UProjectileMovementComponent* MovementComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* AudioComp;
+
+	UPROPERTY(EditAnywhere, Category = "Sound");
+	USoundBase* ImpactSound;
 
 	virtual void KillProjectile();
 

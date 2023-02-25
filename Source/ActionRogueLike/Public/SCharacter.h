@@ -12,6 +12,8 @@ class USInteractionComponent;
 class ASProjectile;
 class USAttributeComponent;
 
+enum ATTRIBUTE;
+
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 {
@@ -72,7 +74,7 @@ protected:
 	void SpawnProjectile(TSubclassOf<ASProjectile> ClassToSpawn);
 
 	UFUNCTION()
-	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float HealthMax, float NewHealth, float Delta);
 
 
 public:	
@@ -81,5 +83,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual bool ApplyConsumable(ATTRIBUTE AttributeToApply, float AmountToApply);
 
 };

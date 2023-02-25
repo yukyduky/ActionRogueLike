@@ -12,7 +12,8 @@ USAttributeComponent::USAttributeComponent()
 
 	// ...
 
-	Health = 100;
+	Health = 100.0f;
+	HealthMax = 100.0f;
 }
 
 
@@ -23,9 +24,17 @@ bool USAttributeComponent::IsAlive() const
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
-	Health += Delta;
+	bool bHealthChanged = false;
 
-	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
+	//float NewHealth = Health + Delta;
+	float NewHealth = FMath::Clamp(Health + Delta, 0.0f, HealthMax);
 
-	return true;
+	if (NewHealth != Health)
+	{
+		bHealthChanged = true;
+		Health = NewHealth;
+		OnHealthChanged.Broadcast(nullptr, this, HealthMax, Health, Delta);
+	}
+
+	return bHealthChanged;
 }
