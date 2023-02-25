@@ -164,7 +164,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<ASProjectile> ClassToSpawn)
 	}
 }
 
-void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
+void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float HealthMax, float NewHealth, float Delta)
 {
 	if (NewHealth <= 0.0f && Delta < 0.0f)
 	{
@@ -211,5 +211,22 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Teleport", IE_Pressed, this, &ASCharacter::Teleport);
 	PlayerInputComponent->BindAction("Blackhole", IE_Pressed, this, &ASCharacter::Blackhole);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
+}
+
+bool ASCharacter::ApplyConsumable(ATTRIBUTE AttributeToApply, float AmountToApply)
+{
+	bool bApplied = false;
+
+	switch (AttributeToApply)
+	{
+	case HEALTH:
+		bApplied = AttributeComp->ApplyHealthChange(AmountToApply);
+		break;
+	case HEALTHMAX:
+		bApplied = true;
+		break;
+	}
+
+	return bApplied;
 }
 
