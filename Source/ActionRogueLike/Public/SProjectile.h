@@ -31,6 +31,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* DeathEffect;
 
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	UParticleSystem* CastEffect;
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	TSubclassOf<UCameraShakeBase> ShakeEffect;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* SphereComp;
 

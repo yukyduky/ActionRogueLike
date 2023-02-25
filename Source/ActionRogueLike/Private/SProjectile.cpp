@@ -45,6 +45,8 @@ void ASProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), CastEffect, GetActorLocation());
 }
 
 void ASProjectile::KillProjectile()
@@ -53,6 +55,7 @@ void ASProjectile::KillProjectile()
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathEffect, GetActorLocation());
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, GetActorLocation());
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), ShakeEffect, GetActorLocation(), 0.0f, 10000.0f);
 		this->Destroy();
 	}
 }
