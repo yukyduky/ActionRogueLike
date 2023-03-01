@@ -16,6 +16,7 @@ ASConsumable::ASConsumable()
 	BaseMesh->SetCollisionProfileName("Consumable");
 
 	StatAmount = 0.0f;
+	RespawnTime = 3.0f;
 }
 
 // Called when the game starts or when spawned
@@ -37,16 +38,20 @@ void ASConsumable::Tick(float DeltaTime)
 
 }
 
-void ASConsumable::TimeOut(float AmountOfSeconds)
+void ASConsumable::TimeOut()
 {
-	//GetWorldTimerManager().SetTimer(TimerHandle_TimeOut, this, &ASConsumable::TimeOut_TimeElasped, 0.2f);
-	GetWorldTimerManager().SetTimer(TimerHandle_TimeOut, this, &ASConsumable::ShowConsumable, AmountOfSeconds);
-	BaseMesh->SetVisibility(false);
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeOut, this, &ASConsumable::ShowConsumable, RespawnTime);
+	SetConsumableState(false);
 }
 
 void ASConsumable::ShowConsumable()
 {
-	BaseMesh->SetVisibility(true);
+	SetConsumableState(true);
 }
 
+void ASConsumable::SetConsumableState(bool bIsActive)
+{
+	RootComponent->SetVisibility(bIsActive, true);
+	SetActorEnableCollision(bIsActive);
+}
 

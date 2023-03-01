@@ -24,10 +24,13 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
-	FTimerHandle TimerHandle_TimeOut;
-
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Consumable")
 	float StatAmount;
+
+	UPROPERTY(EditAnywhere, Category = "Consumable")
+	float RespawnTime;
+
+	FTimerHandle TimerHandle_TimeOut;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,7 +41,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void TimeOut(float AmountOfSeconds);
+	void TimeOut();
 	void ShowConsumable();
+	void SetConsumableState(bool bIsActive);
 
 };

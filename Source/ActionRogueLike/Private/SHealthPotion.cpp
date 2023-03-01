@@ -24,7 +24,7 @@ void ASHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 
 		if (InstigatorCharacter->ApplyConsumable(ATTRIBUTE::HEALTH, StatAmount))
 		{
-			TimeOut(3.0f);
+			TimeOut();
 		}
 	}
 }
