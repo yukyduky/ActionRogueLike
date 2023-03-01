@@ -32,8 +32,9 @@ bool USAttributeComponent::ApplyHealthChange(float Delta)
 	if (NewHealth != Health)
 	{
 		bHealthChanged = true;
+		float ActualDelta = NewHealth - Health;
 		Health = NewHealth;
-		OnHealthChanged.Broadcast(nullptr, this, HealthMax, Health, Delta);
+		OnHealthChanged.Broadcast(nullptr, this, HealthMax, Health, ActualDelta);
 	}
 
 	return bHealthChanged;
