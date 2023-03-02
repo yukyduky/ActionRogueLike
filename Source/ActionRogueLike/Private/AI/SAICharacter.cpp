@@ -6,11 +6,14 @@
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
+#include <SAttributeComponent.h>
 
 // Sets default values
 ASAICharacter::ASAICharacter()
 {
     PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
+
+    AttributeComp = CreateDefaultSubobject<USAttributeComponent>("AttributeComp");
 }
 
 void ASAICharacter::PostInitializeComponents()
@@ -30,4 +33,12 @@ void ASAICharacter::OnPawnSeen(APawn* Pawn)
 
         DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
     }
+}
+
+void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float HealthMax, float NewHealth, float Delta)
+{
+	if (NewHealth <= 0.0f && Delta < 0.0f)
+	{
+        //Destroy();
+	}
 }

@@ -39,3 +39,13 @@ bool USAttributeComponent::ApplyHealthChange(float Delta)
 
 	return bHealthChanged;
 }
+
+float USAttributeComponent::GetHealthFraction()
+{
+	return Health / HealthMax;
+}
+
+bool USAttributeComponent::HealFullHealth()
+{
+	return ApplyHealthChange(HealthMax - Health);
+}
