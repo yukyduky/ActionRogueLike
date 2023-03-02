@@ -19,6 +19,9 @@ public:
 	// Sets default values for this actor's properties
 	ASConsumable();
 
+private:
+	bool bIsActive;
+
 protected:
 
 	UPROPERTY(VisibleAnywhere)
@@ -35,14 +38,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void TimeOut_TimeElasped();
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void TimeOut();
 	void ShowConsumable();
-	void SetConsumableState(bool bIsActive);
+	void SetConsumableState(bool isActive);
+	bool IsActive();
 
 };

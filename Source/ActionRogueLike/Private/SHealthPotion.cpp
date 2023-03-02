@@ -18,13 +18,15 @@ ASHealthPotion::ASHealthPotion()
 
 void ASHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 {
-	if (BaseMesh->IsVisible() && ensure(InstigatorPawn))
+	if (IsActive() && ensure(InstigatorPawn))
 	{
-		ASCharacter* InstigatorCharacter = Cast<ASCharacter>(InstigatorPawn);
-
-		if (InstigatorCharacter->ApplyConsumable(ATTRIBUTE::HEALTH, StatAmount))
+		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(InstigatorPawn->GetComponentByClass(USAttributeComponent::StaticClass()));
+		if (AttributeComp)
 		{
-			TimeOut();
+			if (AttributeComp->ApplyHealthChange(StatAmount))
+			{
+				TimeOut();
+			}
 		}
 	}
 }

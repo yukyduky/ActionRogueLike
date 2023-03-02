@@ -212,21 +212,3 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Blackhole", IE_Pressed, this, &ASCharacter::Blackhole);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
 }
-
-bool ASCharacter::ApplyConsumable(ATTRIBUTE AttributeToApply, float AmountToApply)
-{
-	bool bApplied = false;
-
-	switch (AttributeToApply)
-	{
-	case HEALTH:
-		bApplied = AttributeComp->ApplyHealthChange(AmountToApply);
-		break;
-	case HEALTHMAX:
-		bApplied = true;
-		break;
-	}
-
-	return bApplied;
-}
-

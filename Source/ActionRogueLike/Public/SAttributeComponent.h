@@ -9,8 +9,6 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnHealthChanged, AActor*, InstigatorActor, class USAttributeComponent*, OwningComp,float, HealthMax, float, NewHealth, float, Delta);
 
-enum ATTRIBUTE { HEALTH, HEALTHMAX };
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONROGUELIKE_API USAttributeComponent : public UActorComponent
 {

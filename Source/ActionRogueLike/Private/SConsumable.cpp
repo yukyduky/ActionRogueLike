@@ -17,6 +17,8 @@ ASConsumable::ASConsumable()
 
 	StatAmount = 0.0f;
 	RespawnTime = 3.0f;
+
+	bIsActive = true;
 }
 
 // Called when the game starts or when spawned
@@ -24,11 +26,6 @@ void ASConsumable::BeginPlay()
 {
 	Super::BeginPlay();
 	
-}
-
-void ASConsumable::TimeOut_TimeElasped()
-{
-
 }
 
 // Called every frame
@@ -46,12 +43,19 @@ void ASConsumable::TimeOut()
 
 void ASConsumable::ShowConsumable()
 {
+	GetWorldTimerManager().ClearTimer(TimerHandle_TimeOut);
 	SetConsumableState(true);
 }
 
-void ASConsumable::SetConsumableState(bool bIsActive)
+void ASConsumable::SetConsumableState(bool isActive)
 {
+	this->bIsActive = isActive;
 	RootComponent->SetVisibility(bIsActive, true);
 	SetActorEnableCollision(bIsActive);
+}
+
+bool ASConsumable::IsActive()
+{
+	return bIsActive;
 }
 
