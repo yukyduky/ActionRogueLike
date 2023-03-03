@@ -7,6 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 #include <SAttributeComponent.h>
+#include "BrainComponent.h"
 
 // Sets default values
 ASAICharacter::ASAICharacter()
@@ -23,6 +24,7 @@ void ASAICharacter::PostInitializeComponents()
     Super::PostInitializeComponents();
 
     PawnSensingComp->OnSeePawn.AddDynamic(this, &ASAICharacter::OnPawnSeen);
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ASAICharacter::OnHealthChanged);
 }
 
 void ASAICharacter::OnPawnSeen(APawn* Pawn)
@@ -41,6 +43,15 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 {
 	if (NewHealth <= 0.0f && Delta < 0.0f)
 	{
-        //Destroy();
+        AAIController* AIC = Cast<AAIController>(GetController());
+        if (AIC)
+        {
+            AIC->GetBrainComponent()->StopLogic("Killed");
+        }
+
+        GetMesh()->SetAllBodiesSimulatePhysics(true);
+        GetMesh()->SetCollisionProfileName("Ragdoll");
+
+        SetLifeSpan(10.0f);
 	}
 }
