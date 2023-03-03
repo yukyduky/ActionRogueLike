@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "STeleportProjectile.h"
 #include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -9,17 +6,12 @@
 #include "Kismet/GameplayStatics.h"
 
 
-// Sets default values
 ASTeleportProjectile::ASTeleportProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	
 	FlyTime = 0.2f;
 	TeleportDelay = 0.2f;
 }
 
-// Called when the game starts or when spawned
 void ASTeleportProjectile::BeginPlay()
 {
 	Super::BeginPlay();
@@ -49,4 +41,3 @@ void ASTeleportProjectile::KillProjectile()
 	FTimerHandle TimerHandle_TeleportDelay;
 	GetWorldTimerManager().SetTimer(TimerHandle_TeleportDelay, this, &ASTeleportProjectile::TeleportInstigator, TeleportDelay);
 }
-

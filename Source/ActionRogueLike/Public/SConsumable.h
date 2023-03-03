@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -16,10 +14,11 @@ class ACTIONROGUELIKE_API ASConsumable : public AActor, public ISGameplayInterfa
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+
 	ASConsumable();
 
 private:
+
 	bool bIsActive;
 
 protected:
@@ -35,12 +34,7 @@ protected:
 
 	FTimerHandle TimerHandle_TimeOut;
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	void TimeOut();
 	void ShowConsumable();

@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -19,8 +17,6 @@ class ACTIONROGUELIKE_API USBTService_CheckLowHealth : public UBTService
 protected:
 
 	USBTService_CheckLowHealth();
-
-
 
 	FTimerHandle TimerHandle_SeekCover;
 
