@@ -13,6 +13,8 @@ ASAICharacter::ASAICharacter()
     AttributeComp = CreateDefaultSubobject<USAttributeComponent>("AttributeComp");
 
     AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+    TimeToHitParamName = "TimeToHit";
 }
 
 void ASAICharacter::PostInitializeComponents()
@@ -23,31 +25,45 @@ void ASAICharacter::PostInitializeComponents()
 	AttributeComp->OnHealthChanged.AddDynamic(this, &ASAICharacter::OnHealthChanged);
 }
 
-void ASAICharacter::OnPawnSeen(APawn* Pawn)
+void ASAICharacter::SetTargetActor(AActor* NewTarget)
 {
-    AAIController* AIC = Cast<AAIController>(GetController());
+	AAIController* AIC = Cast<AAIController>(GetController());
     if (AIC)
     {
-        UBlackboardComponent* BBComp = AIC->GetBlackboardComponent();
-        BBComp->SetValueAsObject("TargetActor", Pawn);
-
-        DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
+        AIC->GetBlackboardComponent()->SetValueAsObject("TargetActor", NewTarget);
     }
+}
+
+void ASAICharacter::OnPawnSeen(APawn* Pawn)
+{
+    SetTargetActor(Pawn);
+
+    DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
 }
 
 void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float HealthMax, float NewHealth, float Delta)
 {
-	if (NewHealth <= 0.0f && Delta < 0.0f)
+	if (Delta < 0.0f)
 	{
-        AAIController* AIC = Cast<AAIController>(GetController());
-        if (AIC)
+        if (InstigatorActor != this)
         {
-            AIC->GetBrainComponent()->StopLogic("Killed");
+            SetTargetActor(InstigatorActor);
         }
 
-        GetMesh()->SetAllBodiesSimulatePhysics(true);
-        GetMesh()->SetCollisionProfileName("Ragdoll");
+        GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 
-        SetLifeSpan(10.0f);
+        if (NewHealth <= 0.0f)
+        {
+            AAIController* AIC = Cast<AAIController>(GetController());
+            if (AIC)
+            {
+                AIC->GetBrainComponent()->StopLogic("Killed");
+            }
+
+            GetMesh()->SetAllBodiesSimulatePhysics(true);
+            GetMesh()->SetCollisionProfileName("Ragdoll");
+
+            SetLifeSpan(10.0f);
+        }
 	}
 }

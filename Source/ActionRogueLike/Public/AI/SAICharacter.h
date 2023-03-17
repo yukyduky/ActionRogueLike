@@ -20,14 +20,19 @@ protected:
 
 	void PostInitializeComponents();
 
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UPawnSensingComponent* PawnSensingComp;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USAttributeComponent* AttributeComp;
 
+	void SetTargetActor(AActor* Pawn);
+
 	UFUNCTION()
-	void OnPawnSeen(APawn* Pawn);
+	void OnPawnSeen(APawn* NewTarget);
 
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float HealthMax, float NewHealth, float Delta);
