@@ -17,7 +17,7 @@ void ASHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(InstigatorPawn->GetComponentByClass(USAttributeComponent::StaticClass()));
 		if (AttributeComp)
 		{
-			if (AttributeComp->ApplyHealthChange(StatAmount))
+			if (AttributeComp->ApplyHealthChange(this, StatAmount))
 			{
 				TimeOut();
 			}

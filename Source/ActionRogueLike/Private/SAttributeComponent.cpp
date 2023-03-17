@@ -1,5 +1,26 @@
 #include "SAttributeComponent.h"
 
+USAttributeComponent* USAttributeComponent::GetAttributes(AActor* FromActor)
+{
+	if (FromActor)
+	{
+		return Cast<USAttributeComponent>(FromActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+	}
+
+	return nullptr;
+}
+
+bool USAttributeComponent::IsActorAlive(AActor* Actor)
+{
+	USAttributeComponent* AttributeComp = GetAttributes(Actor);
+	if (AttributeComp)
+	{
+		return AttributeComp->IsAlive();
+	}
+
+	return false;
+}
+
 USAttributeComponent::USAttributeComponent()
 {
 	Health = 100.0f;
@@ -12,7 +33,7 @@ bool USAttributeComponent::IsAlive() const
 	return Health > 0.0f;
 }
 
-bool USAttributeComponent::ApplyHealthChange(float Delta)
+bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
 	bool bHealthChanged = false;
 
@@ -24,7 +45,7 @@ bool USAttributeComponent::ApplyHealthChange(float Delta)
 		bHealthChanged = true;
 		float ActualDelta = NewHealth - Health;
 		Health = NewHealth;
-		OnHealthChanged.Broadcast(nullptr, this, HealthMax, Health, ActualDelta);
+		OnHealthChanged.Broadcast(InstigatorActor, this, HealthMax, Health, ActualDelta);
 	}
 
 	return bHealthChanged;
@@ -37,5 +58,5 @@ float USAttributeComponent::GetHealthFraction()
 
 bool USAttributeComponent::HealFullHealth()
 {
-	return ApplyHealthChange(HealthMax - Health);
+	return ApplyHealthChange(GetOwner(), HealthMax - Health);
 }
