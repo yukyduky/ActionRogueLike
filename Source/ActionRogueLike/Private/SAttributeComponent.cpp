@@ -28,14 +28,34 @@ USAttributeComponent::USAttributeComponent()
 }
 
 
+bool USAttributeComponent::Kill(AActor* InstigatorActor)
+{
+	return ApplyHealthChange(InstigatorActor, -GetHealthMax());
+}
+
 bool USAttributeComponent::IsAlive() const
 {
 	return Health > 0.0f;
 }
 
+bool USAttributeComponent::IsFullHealth()
+{
+	return Health == HealthMax;
+}
+
+float USAttributeComponent::GetHealthMax()
+{
+	return HealthMax;
+}
+
 bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
 	bool bHealthChanged = false;
+
+	if (!GetOwner()->CanBeDamaged())
+	{
+		return false;
+	}
 
 	//float NewHealth = Health + Delta;
 	float NewHealth = FMath::Clamp(Health + Delta, 0.0f, HealthMax);

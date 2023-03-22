@@ -34,8 +34,17 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 
+	UFUNCTION(BlueprintCallable)
+	bool Kill(AActor* InstigatorActor);
+
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool IsAlive() const;
+
+	UFUNCTION(BlueprintCallable)
+	bool IsFullHealth();
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealthMax();
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(AActor* InstigatorActor, float Delta);
